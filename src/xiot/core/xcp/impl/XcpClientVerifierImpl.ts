@@ -108,12 +108,10 @@ export class XcpClientVerifierImpl implements XcpClientVerifier {
     const encryptedSignature = Convert.bin2base64(cc.seal(StringToUint8Array('SV-Msg03'), signature));
     console.log('device signature: ', Convert.bin2base64(signature));
 
-    const deviceId = Convert.bin2base64(cc.seal(StringToUint8Array('SV-Msg03'), StringToUint8Array(this.client.getDeviceId())));
-    const productId = this.client.getProductId();
-    const productVersion = this.client.getProductVersion();
+    const udid = Convert.bin2base64(cc.seal(StringToUint8Array('SV-Msg03'), StringToUint8Array(this.client.getUdid())));
     const id = this.client.nextId();
     const frameCodecType = XcpFrameCodecTypeToNumber(this.codec);
-    const query = new QueryVerifyFinish(id, deviceId, productId, productVersion, encryptedSignature, frameCodecType);
+    const query = new QueryVerifyFinish(id, udid, encryptedSignature, frameCodecType);
     return this.client.sendQuery(query).then(x => this.parseResultVerifyFinish(x));
   }
 

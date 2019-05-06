@@ -15,9 +15,11 @@ import {WebSocketBinaryFrameCodecImpl} from '../codec/WebSocketBinaryFrameCodecI
 import {BinaryFrameCodec} from '../BinaryFrameCodec';
 import {Utf8ArrayToStr} from '../utils/Uint8ArrayUtils';
 import * as WebSocket from 'ws';
+import {XcpUniversalDID} from 'xiot-core-spec-ts/dist/xiot/core/spec/typedef/udid/XcpUniversalDID';
 
 export class XcpClientImpl implements XcpClient {
 
+  private udid: XcpUniversalDID;
   private ws: WebSocket | null = null;
   private verifier: XcpClientVerifier | null = null;
   private verified = false;
@@ -27,11 +29,12 @@ export class XcpClientImpl implements XcpClient {
   private resultHandlers: Map<string, (result: IQResult | null, error: IQError | null) => void>;
   private verifyHandler: (result: boolean) => void = () => {};
 
-  constructor(private deviceId: string,
-              private productId: number,
-              private productVersion: number,
+  constructor(serialNumber: string,
+              productId: number,
+              productVersion: number,
               private cipher: XcpClientCipher,
               private codec: XcpFrameCodecType) {
+    this.udid = new XcpUniversalDID(serialNumber, productId, productVersion);
     this.messageCodec = new XcpMessageCodec();
     this.resultHandlers = new Map<string, (result: IQResult | null, error: IQError | null) => void>();
   }
@@ -189,16 +192,20 @@ export class XcpClientImpl implements XcpClient {
     return'msg#' + this.msgIndex++;
   }
 
-  getDeviceId(): string {
-    return this.deviceId;
+  getSerialNumber(): string {
+    return this.udid.serialNumber;
   }
 
   getProductId(): number {
-    return this.productId;
+    return this.udid.productId;
   }
 
   getProductVersion(): number {
-    return this.productVersion;
+    return this.udid.productVersion;
+  }
+
+  getUdid(): string {
+    return this.udid.toString();
   }
 
   private write(o: Object) {

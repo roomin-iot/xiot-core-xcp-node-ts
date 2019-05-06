@@ -9,11 +9,13 @@ export interface XcpClient {
 
   nextId(): string;
 
-  getDeviceId(): string;
+  getSerialNumber(): string;
 
   getProductId(): number;
 
   getProductVersion(): number;
+
+  getUdid(): string;
 
   // sendQuery(query: IQQuery, handler?: (iq: IQ) => void): Promise<IQResult>;
 
