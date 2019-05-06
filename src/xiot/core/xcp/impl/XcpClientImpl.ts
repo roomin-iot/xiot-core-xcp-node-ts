@@ -14,6 +14,7 @@ import {XcpSessionKey} from '../common/XcpSessionKey';
 import {WebSocketBinaryFrameCodecImpl} from '../codec/WebSocketBinaryFrameCodecImpl';
 import {BinaryFrameCodec} from '../BinaryFrameCodec';
 import {Utf8ArrayToStr} from '../utils/Uint8ArrayUtils';
+import * as WebSocket from 'ws';
 
 export class XcpClientImpl implements XcpClient {
 
@@ -42,7 +43,7 @@ export class XcpClientImpl implements XcpClient {
     this.ws.addEventListener('open', () => this.onConnected());
     this.ws.addEventListener('close', () => this.onDisconnect());
     this.ws.addEventListener('error', () => this.onError());
-    this.ws.addEventListener('message', event => this.onMessage(event));
+    this.ws.addEventListener('message', e => this.onMessage(e));
 
     return new Promise<void>((resolve, reject) => {
       this.verifyHandler = (result) => {
@@ -79,7 +80,7 @@ export class XcpClientImpl implements XcpClient {
     this.ws = null;
   }
 
-  private onMessage(event: MessageEvent): void {
+  private onMessage(event: any): void {
     console.log('onMessage: ', event.data);
 
     let msg: XcpMessage | null = null;
