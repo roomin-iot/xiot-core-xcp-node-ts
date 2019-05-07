@@ -1,1 +1,1 @@
-export * from './xiot/core/xcp/BinaryFrameCodec';
+export * from './xiot/core/xcp/node/impl/XcpClientImpl';
