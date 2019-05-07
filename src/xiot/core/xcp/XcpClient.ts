@@ -1,5 +1,6 @@
 import {IQQuery} from 'xiot-core-message-ts/dist/xiot/core/message/typedef/iq/IQQuery';
 import {IQResult} from 'xiot-core-message-ts/dist/xiot/core/message/typedef/iq/IQResult';
+import {IQError} from 'xiot-core-message-ts/dist/xiot/core/message/typedef/iq/IQError';
 
 export interface XcpClient {
 
@@ -17,7 +18,13 @@ export interface XcpClient {
 
   getUdid(): string;
 
-  // sendQuery(query: IQQuery, handler?: (iq: IQ) => void): Promise<IQResult>;
+  getNextId(): string;
+
+  addQueryHandler(method: string, handler: (query: IQQuery) => void): void;
 
   sendQuery(query: IQQuery): Promise<IQResult>;
+
+  sendResult(result: IQResult): void;
+
+  sendError(error: IQError): void;
 }
