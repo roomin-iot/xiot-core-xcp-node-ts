@@ -8,8 +8,6 @@ export interface XcpClient {
 
   disconnect(): void;
 
-  nextId(): string;
-
   getSerialNumber(): string;
 
   getProductId(): number;

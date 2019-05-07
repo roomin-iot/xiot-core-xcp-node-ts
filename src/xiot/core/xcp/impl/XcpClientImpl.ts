@@ -24,14 +24,12 @@ export class XcpClientImpl implements XcpClient {
   private ws: WebSocket | null = null;
   private verifier: XcpClientVerifier | null = null;
   private verified = false;
-  private msgIndex = 0;
   private frameCodec: BinaryFrameCodec | null = null;
   private messageCodec: XcpMessageCodec;
+  private verifyHandler: (result: boolean) => void = () => {};
   private resultHandlers: Map<string, (result: IQResult | null, error: IQError | null) => void>;
   private queryHandlers: Map<string, (query: IQQuery) => void>;
   private messageId = 1;
-
-  private verifyHandler: (result: boolean) => void = () => {};
 
   constructor(serialNumber: string,
               productId: number,
@@ -69,10 +67,6 @@ export class XcpClientImpl implements XcpClient {
     if (this.ws != null) {
       this.ws.close();
     }
-  }
-
-  nextId(): string {
-    return'msg#' + this.msgIndex++;
   }
 
   getSerialNumber(): string {
@@ -163,9 +157,6 @@ export class XcpClientImpl implements XcpClient {
     }
 
     this.handleMessage(msg);
-
-    // this.handler.message = event.data;
-    // console.log('handle.message: ', this.handler.message);
   }
 
   private handleMessage(message: XcpMessage) {
@@ -197,8 +188,6 @@ export class XcpClientImpl implements XcpClient {
       return;
     }
 
-    console.log('handleQuery: ', query.method);
-
     const handler = this.queryHandlers.get(query.method);
     if (handler != null) {
       handler(query);
@@ -211,8 +200,6 @@ export class XcpClientImpl implements XcpClient {
     if (! (result instanceof IQResult)) {
       return;
     }
-
-    console.log('handleResult: ', result.method);
 
     const handler = this.resultHandlers.get(result.id);
     if (handler != null) {
@@ -227,8 +214,6 @@ export class XcpClientImpl implements XcpClient {
     if (! (error instanceof IQError)) {
       return;
     }
-
-    console.log('handleError: ', error.id);
 
     const handler = this.resultHandlers.get(error.id);
     if (handler != null) {
@@ -251,10 +236,6 @@ export class XcpClientImpl implements XcpClient {
 
     console.log('verify succeed!');
     this.verified = true;
-  }
-
-  private parseError(error: any) {
-    console.error('An error occurred', error);
   }
 
   private write(o: Object) {
