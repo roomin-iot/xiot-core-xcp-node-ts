@@ -1,9 +1,12 @@
 {
   "name": "xiot-core-xcp-node-ts",
-  "version": "0.16.3",
+  "version": "0.16.8",
   "description": "XCP Protocol",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "clean": "rm -fr dist",
@@ -27,7 +30,7 @@
   "dependencies": {
     "@types/ws": "^6.0.1",
     "ws": "^7.0.0",
-    "xiot-core-xcp-ts": "^0.16.3"
+    "xiot-core-xcp-ts": "^0.16.8"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
