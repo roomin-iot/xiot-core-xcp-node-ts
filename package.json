@@ -1,6 +1,6 @@
 {
   "name": "xiot-core-xcp-node-ts",
-  "version": "0.17.5",
+  "version": "0.19.0",
   "description": "XCP Protocol",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,7 +30,7 @@
   "dependencies": {
     "@types/ws": "^6.0.1",
     "ws": "^7.0.0",
-    "xiot-core-xcp-ts": "^0.17.5"
+    "xiot-core-xcp-ts": "^0.19.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
